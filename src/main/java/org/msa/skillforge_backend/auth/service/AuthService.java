@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.msa.skillforge_backend.auth.dto.AuthResponse;
 import org.msa.skillforge_backend.auth.dto.LoginRequest;
 import org.msa.skillforge_backend.auth.dto.RegisterRequest;
+import org.msa.skillforge_backend.auth.exception.InvalidCredentialsException;
+import org.msa.skillforge_backend.auth.exception.UserAlreadyExistsException;
 import org.msa.skillforge_backend.auth.security.JwtService;
 import org.msa.skillforge_backend.user.entity.User;
 import org.msa.skillforge_backend.user.entity.UserRole;
@@ -11,6 +13,7 @@ import org.msa.skillforge_backend.user.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +28,7 @@ public class AuthService {
 
     public AuthResponse register(RegisterRequest request) {
         if (repo.findByEmail(request.getEmail()).isPresent()) {
-            throw new RuntimeException("Email already in use");
+            throw new UserAlreadyExistsException("Email already in use");
         }
 
         User user = User.builder()
@@ -33,7 +36,6 @@ public class AuthService {
                 .email(request.getEmail())
                 .password(encoder.encode(request.getPassword()))
                 .phone(request.getPhone())
-                .id(request.getId())
                 .role(request.getRole())
                 .build();
 
@@ -52,11 +54,11 @@ public class AuthService {
                     )
             );
         } catch (BadCredentialsException ex) {
-            throw new RuntimeException("Invalid credentials");
+            throw new InvalidCredentialsException("Invalid email or password");
         }
 
         User user = repo.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         String token = jwtService.generateToken(user.getEmail(), user.getRole().name());
         return new AuthResponse(token, user.getRole().name());
