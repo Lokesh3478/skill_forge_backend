@@ -103,6 +103,13 @@
             <scope>provided</scope>
         </dependency>
 
+<!--        Jakarta Validation Dependency-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+
     </dependencies>
 
     <!-- Spring AI BOM Version Control -->

@@ -8,7 +8,6 @@ import org.msa.skillforge_backend.auth.exception.InvalidCredentialsException;
 import org.msa.skillforge_backend.auth.exception.UserAlreadyExistsException;
 import org.msa.skillforge_backend.auth.security.JwtService;
 import org.msa.skillforge_backend.user.entity.User;
-import org.msa.skillforge_backend.user.entity.UserRole;
 import org.msa.skillforge_backend.user.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -54,7 +53,7 @@ public class AuthService {
                     )
             );
         } catch (BadCredentialsException ex) {
-            throw new InvalidCredentialsException("Invalid email or password");
+            throw new InvalidCredentialsException(ex.getMessage());
         }
 
         User user = repo.findByEmail(request.getEmail())
