@@ -1,45 +1,97 @@
 package org.msa.skillforge_backend.course.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.msa.skillforge_backend.course.dto.*;
 import org.msa.skillforge_backend.course.entity.Course;
-import org.msa.skillforge_backend.course.exception.CourseAlreadyExisitsException;
-import org.msa.skillforge_backend.course.exception.InvalidCourseDetails;
 import org.msa.skillforge_backend.course.repository.CourseRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CourseService {
 
-    @Autowired
-    private CourseRepository courseRepository;
+    private final CourseRepository courseRepository;
 
-    public Course createCourse(Course course) {
-        return courseRepository.save(course);
+    /* ---------------- CREATE ---------------- */
+
+    public CourseResponse createCourse(CourseCreateRequest request) {
+
+        Course course = Course.builder()
+                .courseName(request.courseName())
+                .build();
+
+        return mapToResponse(courseRepository.save(course));
     }
 
-    public Course getCourse(String courseId) {
-        return courseRepository.findById(courseId)
+    /* ---------------- READ ---------------- */
+
+    public CourseResponse getCourseById(String courseId) {
+        return mapToResponse(
+                courseRepository.findById(courseId)
+                        .orElseThrow(() -> new NoSuchElementException("Course not found"))
+        );
+    }
+
+    public List<CourseSummary> getAllCourses() {
+        return courseRepository.findAll()
+                .stream()
+                .map(course -> new CourseSummary(
+                        course.getCourseId(),
+                        course.getCourseName()
+                ))
+                .toList();
+    }
+
+    /* ---------------- UPDATE ---------------- */
+
+    public CourseResponse updateCourse(
+            String courseId,
+            CourseUpdateRequest request
+    ) {
+
+        Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new NoSuchElementException("Course not found"));
+
+        course.setCourseName(request.courseName());
+
+        return mapToResponse(courseRepository.save(course));
     }
 
-    public Course updateCourse(String courseId, Course newCourse) {
-
-        Course oldCourse = courseRepository.findById(courseId)
-                .orElseThrow(() -> new NoSuchElementException("Course not found"));
-
-        oldCourse.setCourseName(newCourse.getCourseName());
-        oldCourse.setInstructors(newCourse.getInstructors());
-
-        return courseRepository.save(oldCourse);
-    }
+    /* ---------------- DELETE ---------------- */
 
     public void deleteCourse(String courseId) {
-        Course oldCourse = courseRepository.findById(courseId)
+
+        Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new NoSuchElementException("Course not found"));
-        courseRepository.delete(oldCourse);
+
+        courseRepository.delete(course);
+    }
+
+    /* ---------------- MAPPER ---------------- */
+
+    private CourseResponse mapToResponse(Course course) {
+
+        List<PhaseSummary> phaseSummaries =
+                course.getPhases() == null
+                        ? List.of()
+                        : course.getPhases()
+                        .stream()
+                        .map(phase -> new PhaseSummary(
+                                phase.getPhaseId(),
+                                phase.getTitle()
+                        ))
+                        .toList();
+
+        return new CourseResponse(
+                course.getCourseId(),
+                course.getCourseName(),
+                phaseSummaries,
+                course.getFinalAssessment() != null
+                        ? course.getFinalAssessment().getAssessmentId()
+                        : null
+        );
     }
 }
