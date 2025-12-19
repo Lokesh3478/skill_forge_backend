@@ -8,6 +8,7 @@ import org.msa.skillforge_backend.assessment.entity.FinalAssessment;
 import org.msa.skillforge_backend.assessment.entity.Test;
 import org.msa.skillforge_backend.assessment.repository.FinalAssessmentRepository;
 import org.msa.skillforge_backend.assessment.repository.TestRepository;
+import org.msa.skillforge_backend.course.entity.Course;
 import org.msa.skillforge_backend.course.entity.Phase;
 import org.msa.skillforge_backend.course.repository.CourseRepository;
 import org.msa.skillforge_backend.course.repository.PhaseRepository;

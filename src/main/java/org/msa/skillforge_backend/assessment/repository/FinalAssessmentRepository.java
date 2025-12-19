@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface FinalAssessmentRepository extends JpaRepository<FinalAssessment, String> {
 
     Optional<FinalAssessment> findByCourse_CourseId(String courseId);
+    boolean existsByCourse_CourseId(String courseId);
 }

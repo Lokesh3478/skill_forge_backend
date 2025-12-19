@@ -1,6 +1,6 @@
 package org.msa.skillforge_backend.assessment.dto;
 
-enum AssessmentType {
+public enum AssessmentType {
     TEST,
     FINAL
 }
