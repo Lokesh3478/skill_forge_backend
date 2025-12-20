@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/courses")
+@RequestMapping("/api/v1/courses")
 @RequiredArgsConstructor
 public class CourseController {
 
@@ -26,6 +26,8 @@ public class CourseController {
     public CourseResponse createCourse(
             @Valid @RequestBody CourseCreateRequest request
     ) {
+        System.out.println("hit");
+        System.out.println(request);
         return courseService.createCourse(request);
     }
 
@@ -35,6 +37,7 @@ public class CourseController {
     public CourseResponse getCourseById(
             @PathVariable String courseId
     ) {
+
         return courseService.getCourseById(courseId);
     }
 

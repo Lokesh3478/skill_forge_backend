@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/phases")
+@RequestMapping("/api/v1/phases")
 @RequiredArgsConstructor
 public class PhaseController {
 

@@ -3,6 +3,7 @@ package org.msa.skillforge_backend.assessment.service;
 import lombok.RequiredArgsConstructor;
 import org.msa.skillforge_backend.assessment.dto.MCQCreateRequest;
 import org.msa.skillforge_backend.assessment.dto.MCQResponse;
+import org.msa.skillforge_backend.assessment.dto.MCQUpdateRequest;
 import org.msa.skillforge_backend.assessment.entity.Assessment;
 import org.msa.skillforge_backend.assessment.entity.MCQQuestion;
 import org.msa.skillforge_backend.assessment.repository.AssessmentRepository;
@@ -50,6 +51,24 @@ public class QuestionService {
                 .map(q -> mapToMCQResponse((MCQQuestion) q))
                 .toList();
     }
+
+    /*---------UPDATE SERVICE----------*/
+
+    public MCQResponse updateMCQ(
+            String questionId,
+            MCQUpdateRequest request
+    ) {
+
+        MCQQuestion question = mcqQuestionRepository.findById(questionId)
+                .orElseThrow(() -> new NoSuchElementException("MCQ question not found"));
+
+        question.setQuestionText(request.questionText());
+        question.setOptions(request.options());
+        question.setCorrectAnswer(request.correctAnswer());
+
+        return mapToMCQResponse(mcqQuestionRepository.save(question));
+    }
+
 
     /* ---------------- DELETE ---------------- */
 

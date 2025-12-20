@@ -3,17 +3,23 @@ package org.msa.skillforge_backend.assessment.service;
 import lombok.RequiredArgsConstructor;
 import org.msa.skillforge_backend.assessment.dto.AssessmentResponse;
 import org.msa.skillforge_backend.assessment.dto.AssessmentType;
+import org.msa.skillforge_backend.assessment.dto.AssessmentWithQuestionsResponse;
+import org.msa.skillforge_backend.assessment.dto.MCQResponse;
 import org.msa.skillforge_backend.assessment.entity.Assessment;
 import org.msa.skillforge_backend.assessment.entity.FinalAssessment;
+import org.msa.skillforge_backend.assessment.entity.MCQQuestion;
 import org.msa.skillforge_backend.assessment.entity.Test;
 import org.msa.skillforge_backend.assessment.repository.FinalAssessmentRepository;
+import org.msa.skillforge_backend.assessment.repository.MCQQuestionRepository;
 import org.msa.skillforge_backend.assessment.repository.TestRepository;
 import org.msa.skillforge_backend.course.entity.Course;
 import org.msa.skillforge_backend.course.entity.Phase;
 import org.msa.skillforge_backend.course.repository.CourseRepository;
 import org.msa.skillforge_backend.course.repository.PhaseRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
 import java.util.NoSuchElementException;
 
 @Service
@@ -24,6 +30,7 @@ public class AssessmentService {
     private final FinalAssessmentRepository finalAssessmentRepository;
     private final PhaseRepository phaseRepository;
     private final CourseRepository courseRepository;
+    private final MCQQuestionRepository mcqQuestionRepository;
 
     /* ---------------- CREATE TEST ---------------- */
 
@@ -85,6 +92,7 @@ public class AssessmentService {
         return mapToResponse(assessment);
     }
 
+
     /* ---------------- DELETE ---------------- */
 
     public void deleteAssessment(String assessmentId) {
@@ -110,7 +118,7 @@ public class AssessmentService {
             return new AssessmentResponse(
                     test.getAssessmentId(),
                     AssessmentType.TEST,
-                    test.getPhase().getPhaseId(),
+                    test.getPhase() != null ? test.getPhase().getPhaseId() : null,
                     null
             );
         }
@@ -120,11 +128,58 @@ public class AssessmentService {
                     finalAssessment.getAssessmentId(),
                     AssessmentType.FINAL,
                     null,
-                    finalAssessment.getCourse().getCourseId()
+                    finalAssessment.getCourse() != null
+                            ? finalAssessment.getCourse().getCourseId()
+                            : null
             );
         }
 
-        throw new IllegalStateException("Unknown assessment type");
+        throw new IllegalStateException(
+                "Unsupported assessment subtype: " + assessment.getClass().getName()
+        );
+    }
+    public AssessmentWithQuestionsResponse getAssessmentWithQuestions(
+            String assessmentId,
+            Pageable pageable
+    ) {
+
+        Assessment assessment = testRepository.findById(assessmentId)
+                .map(a -> (Assessment) a)
+                .orElseGet(() ->
+                        finalAssessmentRepository.findById(assessmentId)
+                                .orElseThrow(() ->
+                                        new NoSuchElementException("Assessment not found"))
+                );
+
+        Page<MCQQuestion> questionPage =
+                mcqQuestionRepository.findByAssessment_AssessmentId(
+                        assessmentId,
+                        pageable
+                );
+
+        return new AssessmentWithQuestionsResponse(
+                assessment.getAssessmentId(),
+                assessment instanceof org.msa.skillforge_backend.assessment.entity.Test
+                        ? AssessmentType.TEST
+                        : AssessmentType.FINAL,
+                assessment instanceof org.msa.skillforge_backend.assessment.entity.Test test
+                        ? test.getPhase().getPhaseId()
+                        : null,
+                assessment instanceof org.msa.skillforge_backend.assessment.entity.FinalAssessment fa
+                        ? fa.getCourse().getCourseId()
+                        : null,
+                questionPage.getContent().stream()
+                        .map(q -> new MCQResponse(
+                                q.getQuestionId(),
+                                q.getQuestionText(),
+                                q.getOptions()
+                        ))
+                        .toList(),
+                questionPage.getNumber(),
+                questionPage.getSize(),
+                questionPage.getTotalElements(),
+                questionPage.getTotalPages()
+        );
     }
 
 }

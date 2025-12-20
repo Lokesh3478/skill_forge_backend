@@ -16,4 +16,5 @@ public class ErrorResponse {
     private String message;
     private LocalDateTime timestamp;
     private int status;
+    private Object errors; // Optional: for validation or extra details
 }
