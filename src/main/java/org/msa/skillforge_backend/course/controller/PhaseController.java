@@ -18,14 +18,6 @@ public class PhaseController {
 
     private final PhaseService phaseService;
 
-    /* ---------------- CREATE ---------------- */
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public PhaseResponse createPhase(@Valid @RequestBody PhaseCreateRequest request) {
-        return phaseService.createPhase(request);
-    }
-
     /* ---------------- READ ---------------- */
 
     @GetMapping("/{phaseId}")

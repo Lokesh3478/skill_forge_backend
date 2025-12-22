@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 public record FinalAssessmentCreateRequest(
 
         @NotBlank
-        String courseId
+        String courseId,
+        @NotBlank
+        String finalAssessmentName
 ) {}
 

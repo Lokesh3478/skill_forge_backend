@@ -1,10 +1,7 @@
 package org.msa.skillforge_backend.assessment.service;
 
 import lombok.RequiredArgsConstructor;
-import org.msa.skillforge_backend.assessment.dto.AssessmentResponse;
-import org.msa.skillforge_backend.assessment.dto.AssessmentType;
-import org.msa.skillforge_backend.assessment.dto.AssessmentWithQuestionsResponse;
-import org.msa.skillforge_backend.assessment.dto.MCQResponse;
+import org.msa.skillforge_backend.assessment.dto.*;
 import org.msa.skillforge_backend.assessment.entity.Assessment;
 import org.msa.skillforge_backend.assessment.entity.FinalAssessment;
 import org.msa.skillforge_backend.assessment.entity.MCQQuestion;
@@ -57,8 +54,10 @@ public class AssessmentService {
 
     /* ---------------- CREATE FINAL ASSESSMENT ---------------- */
 
-    public AssessmentResponse createFinalAssessmentForCourse(String courseId) {
+    public AssessmentResponse createFinalAssessmentForCourse(FinalAssessmentCreateRequest createRequest) {
 
+        String courseId = createRequest.courseId();
+        String name = createRequest.finalAssessmentName();
         if (finalAssessmentRepository.existsByCourse_CourseId(courseId)) {
             throw new IllegalStateException("Final assessment already exists for this course");
         }

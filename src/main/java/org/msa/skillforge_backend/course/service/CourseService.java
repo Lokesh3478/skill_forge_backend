@@ -2,9 +2,17 @@ package org.msa.skillforge_backend.course.service;
 
 import lombok.RequiredArgsConstructor;
 import org.msa.skillforge_backend.course.dto.*;
+import org.msa.skillforge_backend.course.dto.courseDto.CourseCreateRequest;
+import org.msa.skillforge_backend.course.dto.courseDto.CourseResponse;
+import org.msa.skillforge_backend.course.dto.courseDto.CourseSummary;
+import org.msa.skillforge_backend.course.dto.courseDto.CourseUpdateRequest;
 import org.msa.skillforge_backend.course.entity.Course;
 import org.msa.skillforge_backend.course.repository.CourseRepository;
+import org.msa.skillforge_backend.user.entity.Instructor;
+import org.msa.skillforge_backend.user.repository.InstructorRepository;
+import org.msa.skillforge_backend.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -14,6 +22,8 @@ import java.util.NoSuchElementException;
 public class CourseService {
 
     private final CourseRepository courseRepository;
+    private final InstructorRepository instructorRepository;
+    private final UserRepository userRepository;
 
     /* ---------------- CREATE ---------------- */
 
@@ -45,6 +55,7 @@ public class CourseService {
                 .toList();
     }
 
+
     /* ---------------- UPDATE ---------------- */
 
     public CourseResponse updateCourse(
@@ -58,6 +69,35 @@ public class CourseService {
         course.setCourseName(request.courseName());
 
         return mapToResponse(courseRepository.save(course));
+    }
+
+    /*-------------ADD INSTRUCTOR--------------------------*/
+
+    @Transactional
+    public void assignInstructorToCourse(
+            String courseId,
+            String instructorId
+    ) {
+
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new NoSuchElementException("Course not found"));
+
+        Instructor instructor = instructorRepository.
+                findById(
+                        userRepository.findByEmail(
+                                instructorId
+                        ).orElseThrow(
+                                ()-> new NoSuchElementException("Instructor Mail not found")
+                        ).getId()
+                ).orElseThrow(
+                        ()-> new NoSuchElementException("Instructor not linked in user")
+                );
+        if (instructor.getCourseSet().contains(course)) {
+            throw new IllegalStateException("Instructor already assigned to this course");
+        }
+
+        instructor.getCourseSet().add(course);
+        course.getInstructorSet().add(instructor);
     }
 
     /* ---------------- DELETE ---------------- */

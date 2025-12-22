@@ -15,30 +15,6 @@ public class AssessmentController {
 
     private final AssessmentService assessmentService;
 
-    /* ---------------- CREATE TEST (Phase-level) ---------------- */
-
-    @PostMapping("/phases/{phaseId}/test")
-    public ResponseEntity<AssessmentResponse> createTestForPhase(
-            @PathVariable String phaseId,
-            @RequestParam String testName
-    ) {
-        return new ResponseEntity<>(
-                assessmentService.createTestForPhase(phaseId, testName),
-                HttpStatus.CREATED
-        );
-    }
-
-    /* ---------------- CREATE FINAL ASSESSMENT (Course-level) ---------------- */
-
-    @PostMapping("/courses/{courseId}/final")
-    public ResponseEntity<AssessmentResponse> createFinalAssessmentForCourse(
-            @PathVariable String courseId
-    ) {
-        return new ResponseEntity<>(
-                assessmentService.createFinalAssessmentForCourse(courseId),
-                HttpStatus.CREATED
-        );
-    }
 
     /* ---------------- READ ---------------- */
 

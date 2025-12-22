@@ -16,16 +16,6 @@ public class ContentController {
 
     private final ContentService contentService;
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ContentResponse createContent(
-            @RequestParam String phaseId,
-            @RequestParam String contentName,
-            @RequestParam String contentUrl
-    ) {
-        return contentService.createContent(contentName, contentUrl, phaseId);
-    }
-
     @GetMapping("/{contentId}")
     public ContentResponse getContentById(@PathVariable String contentId) {
         return contentService.getContentById(contentId);
