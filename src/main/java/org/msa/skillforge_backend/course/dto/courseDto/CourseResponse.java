@@ -1,6 +1,6 @@
 package org.msa.skillforge_backend.course.dto.courseDto;
 
-import org.msa.skillforge_backend.course.dto.PhaseSummary;
+import org.msa.skillforge_backend.course.dto.phase.PhaseSummary;
 
 import java.util.List;
 

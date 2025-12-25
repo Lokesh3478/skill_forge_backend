@@ -1,4 +1,4 @@
-package org.msa.skillforge_backend.course.dto;
+package org.msa.skillforge_backend.course.dto.content;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

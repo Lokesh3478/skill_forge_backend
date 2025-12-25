@@ -1,10 +1,8 @@
 package org.msa.skillforge_backend.course.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.msa.skillforge_backend.course.dto.PhaseCreateRequest;
-import org.msa.skillforge_backend.course.dto.PhaseResponse;
-import org.msa.skillforge_backend.course.dto.PhaseSummary;
+import org.msa.skillforge_backend.course.dto.phase.PhaseResponse;
+import org.msa.skillforge_backend.course.dto.phase.PhaseSummary;
 import org.msa.skillforge_backend.course.service.PhaseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

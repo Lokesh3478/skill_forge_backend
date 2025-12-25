@@ -1,10 +1,10 @@
 package org.msa.skillforge_backend.course.service;
 
 import lombok.RequiredArgsConstructor;
-import org.msa.skillforge_backend.course.dto.ContentResponse;
-import org.msa.skillforge_backend.course.dto.PhaseCreateRequest;
-import org.msa.skillforge_backend.course.dto.PhaseResponse;
-import org.msa.skillforge_backend.course.dto.PhaseSummary;
+import org.msa.skillforge_backend.course.dto.content.ContentResponse;
+import org.msa.skillforge_backend.course.dto.phase.PhaseCreateRequest;
+import org.msa.skillforge_backend.course.dto.phase.PhaseResponse;
+import org.msa.skillforge_backend.course.dto.phase.PhaseSummary;
 import org.msa.skillforge_backend.course.entity.Content;
 import org.msa.skillforge_backend.course.entity.Course;
 import org.msa.skillforge_backend.course.entity.Phase;

@@ -1,4 +1,6 @@
-package org.msa.skillforge_backend.course.dto;
+package org.msa.skillforge_backend.course.dto.phase;
+
+import org.msa.skillforge_backend.course.dto.content.ContentResponse;
 
 import java.util.List;
 

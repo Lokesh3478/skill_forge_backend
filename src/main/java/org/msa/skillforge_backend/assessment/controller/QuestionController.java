@@ -2,8 +2,8 @@ package org.msa.skillforge_backend.assessment.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.msa.skillforge_backend.assessment.dto.MCQCreateRequest;
-import org.msa.skillforge_backend.assessment.dto.MCQResponse;
+import org.msa.skillforge_backend.assessment.dto.question.MCQCreateRequest;
+import org.msa.skillforge_backend.assessment.dto.question.MCQResponse;
 import org.msa.skillforge_backend.assessment.service.QuestionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

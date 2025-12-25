@@ -1,8 +1,7 @@
 package org.msa.skillforge_backend.course.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.msa.skillforge_backend.course.dto.ContentResponse;
+import org.msa.skillforge_backend.course.dto.content.ContentResponse;
 import org.msa.skillforge_backend.course.service.ContentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

@@ -1,7 +1,8 @@
 package org.msa.skillforge_backend.assessment.service;
 
 import lombok.RequiredArgsConstructor;
-import org.msa.skillforge_backend.assessment.dto.*;
+import org.msa.skillforge_backend.assessment.dto.assessment.*;
+import org.msa.skillforge_backend.assessment.dto.question.MCQResponse;
 import org.msa.skillforge_backend.assessment.entity.Assessment;
 import org.msa.skillforge_backend.assessment.entity.FinalAssessment;
 import org.msa.skillforge_backend.assessment.entity.MCQQuestion;
@@ -31,7 +32,11 @@ public class AssessmentService {
 
     /* ---------------- CREATE TEST ---------------- */
 
-    public AssessmentResponse createTestForPhase(String phaseId, String testName) {
+    public AssessmentResponse createTestForPhase(TestCreateRequest testCreateRequest) {
+
+        String phaseId = testCreateRequest.phaseId();
+        Integer durationInMinutes = testCreateRequest.durationInMinutes();
+        String testName = testCreateRequest.testName();
 
         if (testRepository.existsByPhase_PhaseId(phaseId)) {
             throw new IllegalStateException("Test already exists for this phase");
@@ -43,6 +48,7 @@ public class AssessmentService {
         Test test = Test.builder()
                 .testName(testName)
                 .phase(phase)
+                .durationInMinutes(durationInMinutes)
                 .build();
 
         phase.setTest(test);
@@ -58,6 +64,7 @@ public class AssessmentService {
 
         String courseId = createRequest.courseId();
         String name = createRequest.finalAssessmentName();
+        Integer durationInMinutes = createRequest.durationInMinutes();
         if (finalAssessmentRepository.existsByCourse_CourseId(courseId)) {
             throw new IllegalStateException("Final assessment already exists for this course");
         }
@@ -67,6 +74,7 @@ public class AssessmentService {
 
         FinalAssessment finalAssessment = FinalAssessment.builder()
                 .course(course)
+                .durationInMinutes(durationInMinutes)
                 .build();
 
         course.setFinalAssessment(finalAssessment);

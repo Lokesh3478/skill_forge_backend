@@ -1,12 +1,12 @@
 package org.msa.skillforge_backend.course.service;
 
 import lombok.RequiredArgsConstructor;
-import org.msa.skillforge_backend.course.dto.ContentResponse;
+import org.msa.skillforge_backend.course.dto.content.ContentResponse;
+import org.msa.skillforge_backend.course.dto.content.CreateContentRequest;
 import org.msa.skillforge_backend.course.entity.Content;
 import org.msa.skillforge_backend.course.entity.Phase;
 import org.msa.skillforge_backend.course.repository.ContentRepository;
 import org.msa.skillforge_backend.course.repository.PhaseRepository;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,10 +20,12 @@ public class ContentService {
     private final PhaseRepository phaseRepository;
 
     public ContentResponse createContent(
-            String contentName,
-            String contentUrl,
-            String phaseId
+            CreateContentRequest createContentRequest
     ) {
+        String phaseId = createContentRequest.phaseId();
+        String contentName = createContentRequest.contentName();
+        String contentUrl = createContentRequest.contentUrl();
+        Integer durationInMinutes = createContentRequest.durationInMinutes();
         Phase phase = phaseRepository.findById(phaseId)
                 .orElseThrow(() -> new NoSuchElementException("Phase not found"));
 

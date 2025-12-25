@@ -1,9 +1,13 @@
 package org.msa.skillforge_backend.assessment.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +18,7 @@ import java.util.List;
 @Entity
 @Table(name="assessment")
 @Inheritance(strategy = InheritanceType.JOINED)
+@SuperBuilder
 public abstract class Assessment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -24,4 +29,9 @@ public abstract class Assessment {
             orphanRemoval = true
     )
     List<Question> questionList = new ArrayList<>();
+    @NotNull
+    @Min(1)
+    @Max(300)
+    @Column(nullable = false)
+    private Integer durationInMinutes;
 }

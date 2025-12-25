@@ -1,5 +1,7 @@
-package org.msa.skillforge_backend.assessment.dto;
+package org.msa.skillforge_backend.assessment.dto.assessment;
 
+
+import org.msa.skillforge_backend.assessment.dto.question.MCQResponse;
 
 import java.util.List;
 

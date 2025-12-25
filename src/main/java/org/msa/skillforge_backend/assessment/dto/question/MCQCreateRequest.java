@@ -1,4 +1,4 @@
-package org.msa.skillforge_backend.assessment.dto;
+package org.msa.skillforge_backend.assessment.dto.question;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;

@@ -38,4 +38,6 @@ public class Content {
     @JoinColumn(name = "phase_id", nullable = false)
     private Phase phase;
 
+    private Integer durationInMinutes;
+
 }

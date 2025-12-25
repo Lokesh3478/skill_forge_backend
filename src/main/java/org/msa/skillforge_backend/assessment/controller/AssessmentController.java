@@ -1,8 +1,8 @@
 package org.msa.skillforge_backend.assessment.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.msa.skillforge_backend.assessment.dto.AssessmentResponse;
-import org.msa.skillforge_backend.assessment.dto.AssessmentWithQuestionsResponse;
+import org.msa.skillforge_backend.assessment.dto.assessment.AssessmentResponse;
+import org.msa.skillforge_backend.assessment.dto.assessment.AssessmentWithQuestionsResponse;
 import org.msa.skillforge_backend.assessment.service.AssessmentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class AssessmentController {
 
     private final AssessmentService assessmentService;
+
 
 
     /* ---------------- READ ---------------- */

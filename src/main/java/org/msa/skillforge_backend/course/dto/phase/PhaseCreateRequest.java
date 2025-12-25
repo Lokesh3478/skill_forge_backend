@@ -1,4 +1,4 @@
-package org.msa.skillforge_backend.course.dto;
+package org.msa.skillforge_backend.course.dto.phase;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

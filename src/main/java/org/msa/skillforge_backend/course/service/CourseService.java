@@ -1,13 +1,16 @@
 package org.msa.skillforge_backend.course.service;
 
 import lombok.RequiredArgsConstructor;
-import org.msa.skillforge_backend.course.dto.*;
 import org.msa.skillforge_backend.course.dto.courseDto.CourseCreateRequest;
 import org.msa.skillforge_backend.course.dto.courseDto.CourseResponse;
 import org.msa.skillforge_backend.course.dto.courseDto.CourseSummary;
 import org.msa.skillforge_backend.course.dto.courseDto.CourseUpdateRequest;
+import org.msa.skillforge_backend.course.dto.phase.PhaseSummary;
+import org.msa.skillforge_backend.course.entity.Content;
 import org.msa.skillforge_backend.course.entity.Course;
+import org.msa.skillforge_backend.course.entity.Phase;
 import org.msa.skillforge_backend.course.repository.CourseRepository;
+import org.msa.skillforge_backend.course.repository.PhaseRepository;
 import org.msa.skillforge_backend.user.entity.Instructor;
 import org.msa.skillforge_backend.user.repository.InstructorRepository;
 import org.msa.skillforge_backend.user.repository.UserRepository;
@@ -24,6 +27,7 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final InstructorRepository instructorRepository;
     private final UserRepository userRepository;
+    private final PhaseRepository phaseRepository;
 
     /* ---------------- CREATE ---------------- */
 
@@ -133,5 +137,19 @@ public class CourseService {
                         ? course.getFinalAssessment().getAssessmentId()
                         : null
         );
+    }
+    // helper methods;
+
+    public Integer getCourseDuration(String courseId) {
+        Integer duration = 0;
+        Course course = courseRepository.findById(courseId).orElseThrow(
+                () -> new NoSuchElementException("Course not found")
+        );
+        for(Phase phase:course.getPhases()){
+            for(Content content : phase.getContentsList()) {
+                duration+=content.getDurationInMinutes();
+            }
+        }
+        return duration;
     }
 }

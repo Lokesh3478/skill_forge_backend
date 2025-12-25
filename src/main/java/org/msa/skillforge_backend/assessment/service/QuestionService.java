@@ -1,9 +1,9 @@
 package org.msa.skillforge_backend.assessment.service;
 
 import lombok.RequiredArgsConstructor;
-import org.msa.skillforge_backend.assessment.dto.MCQCreateRequest;
-import org.msa.skillforge_backend.assessment.dto.MCQResponse;
-import org.msa.skillforge_backend.assessment.dto.MCQUpdateRequest;
+import org.msa.skillforge_backend.assessment.dto.question.MCQCreateRequest;
+import org.msa.skillforge_backend.assessment.dto.question.MCQResponse;
+import org.msa.skillforge_backend.assessment.dto.question.MCQUpdateRequest;
 import org.msa.skillforge_backend.assessment.entity.Assessment;
 import org.msa.skillforge_backend.assessment.entity.MCQQuestion;
 import org.msa.skillforge_backend.assessment.repository.AssessmentRepository;
