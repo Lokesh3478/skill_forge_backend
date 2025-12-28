@@ -2,6 +2,7 @@ package org.msa.skillforge_backend.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.msa.skillforge_backend.course.dto.courseDto.CourseSummary;
+import org.msa.skillforge_backend.course.service.CourseDurationService;
 import org.msa.skillforge_backend.user.entity.Instructor;
 import org.msa.skillforge_backend.user.repository.InstructorRepository;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InstructorService {
     private final InstructorRepository instructorRepository;
+    private final CourseDurationService courseDurationService;
+
     @Transactional(readOnly = true)
     public List<CourseSummary> getCoursesByInstructorId(String instructorId) {
         Instructor instructor = instructorRepository.findById(instructorId)
@@ -22,7 +25,8 @@ public class InstructorService {
                 .stream()
                 .map(course -> new CourseSummary(
                         course.getCourseId(),
-                        course.getCourseName()
+                        course.getCourseName(),
+                        courseDurationService.findDuration(course.getCourseId())
                 ))
                 .toList();
     }

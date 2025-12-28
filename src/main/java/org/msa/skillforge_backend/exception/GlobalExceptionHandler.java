@@ -1,4 +1,4 @@
-package common.exception;
+package org.msa.skillforge_backend.exception;
 
 import org.msa.skillforge_backend.auth.dto.ErrorResponse;
 import org.msa.skillforge_backend.auth.exception.InvalidCredentialsException;
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
     /* ---------------- Database / Business Constraints ---------------- */
     @ExceptionHandler({IllegalStateException.class, DataIntegrityViolationException.class})
     public ResponseEntity<ErrorResponse> handleConflict(RuntimeException ex) {
-        String message = "Request violates data constraints";
+        String message = ex.getMessage()!=null?ex.getMessage():"Request violates data constraints";
 
         if (ex instanceof DataIntegrityViolationException dive && dive.getRootCause() != null) {
             String rootMessage = dive.getRootCause().getMessage();
@@ -66,7 +66,6 @@ public class GlobalExceptionHandler {
                 message = rootMessage;
             }
         }
-
         return buildErrorResponse(HttpStatus.CONFLICT, message);
     }
 

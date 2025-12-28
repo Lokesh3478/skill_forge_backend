@@ -20,6 +20,7 @@ public class PhaseController {
 
     @GetMapping("/{phaseId}")
     public PhaseResponse getPhaseById(@PathVariable String phaseId) {
+        System.out.println("/phases/" + phaseId);
         return phaseService.getPhaseById(phaseId);
     }
 

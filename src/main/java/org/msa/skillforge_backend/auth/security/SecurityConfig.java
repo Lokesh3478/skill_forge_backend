@@ -37,6 +37,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/register").permitAll()
                         .requestMatchers("/api/v1/auth/login").permitAll()
                         .requestMatchers("/api/v1/courses/**").permitAll()
+                        .requestMatchers("/api/v1/contents/**").permitAll()
+                        .requestMatchers("/api/v1/phases/**").permitAll()
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/instructor/**").hasRole("INSTRUCTOR")
                         .requestMatchers("/api/v1/student/**").hasRole("STUDENT")

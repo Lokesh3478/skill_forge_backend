@@ -3,10 +3,12 @@ package org.msa.skillforge_backend.course.service;
 import lombok.RequiredArgsConstructor;
 import org.msa.skillforge_backend.course.dto.content.ContentResponse;
 import org.msa.skillforge_backend.course.dto.content.CreateContentRequest;
+import org.msa.skillforge_backend.course.dto.courseDto.CourseSummary;
 import org.msa.skillforge_backend.course.entity.Content;
 import org.msa.skillforge_backend.course.entity.Phase;
 import org.msa.skillforge_backend.course.repository.ContentRepository;
 import org.msa.skillforge_backend.course.repository.PhaseRepository;
+import org.msa.skillforge_backend.taxonomy.repository.TopicRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,7 @@ public class ContentService {
 
     private final ContentRepository contentRepository;
     private final PhaseRepository phaseRepository;
+    private final TopicRepository topicRepository;
 
     public ContentResponse createContent(
             CreateContentRequest createContentRequest
@@ -39,6 +42,7 @@ public class ContentService {
                 .contentName(contentName)
                 .contentUrl(contentUrl)
                 .phase(phase)
+                .durationInMinutes(durationInMinutes)
                 .build();
 
         return mapToResponse(contentRepository.save(content));

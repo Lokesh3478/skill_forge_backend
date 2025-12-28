@@ -11,14 +11,19 @@ import org.msa.skillforge_backend.course.entity.Course;
 import org.msa.skillforge_backend.course.entity.Phase;
 import org.msa.skillforge_backend.course.repository.CourseRepository;
 import org.msa.skillforge_backend.course.repository.PhaseRepository;
+import org.msa.skillforge_backend.taxonomy.entity.Topic;
+import org.msa.skillforge_backend.taxonomy.repository.TopicRepository;
+import org.msa.skillforge_backend.taxonomy.service.TopicService;
 import org.msa.skillforge_backend.user.entity.Instructor;
 import org.msa.skillforge_backend.user.repository.InstructorRepository;
 import org.msa.skillforge_backend.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -27,17 +32,30 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final InstructorRepository instructorRepository;
     private final UserRepository userRepository;
-    private final PhaseRepository phaseRepository;
+    private final TopicRepository topicRepository;
+    private final CourseDurationService courseDurationService;
 
     /* ---------------- CREATE ---------------- */
 
     public CourseResponse createCourse(CourseCreateRequest request) {
 
-        Course course = Course.builder()
-                .courseName(request.courseName())
-                .build();
+        System.out.println("entered "+request);
+        if(request.topicIds()!=null&&!request.topicIds().isEmpty()) {
+            for(String topic : request.topicIds()) {
+                if(!topicRepository.existsById(topic)) {
+                    throw new NoSuchElementException("One or more topics not found");
+                }
+            }
+            Set<Topic>fetchedIds = new HashSet<>(topicRepository.findAllById(request.topicIds()));
+            System.out.println(fetchedIds+" "+topicRepository.findAllById(request.topicIds()));
+            Course course = Course.builder()
+                    .courseName(request.courseName())
+                    .topics(fetchedIds)
+                    .build();
+            return mapToResponse(courseRepository.save(course));
+        }
 
-        return mapToResponse(courseRepository.save(course));
+        throw new IllegalArgumentException("Topics cannot be empty");
     }
 
     /* ---------------- READ ---------------- */
@@ -54,7 +72,23 @@ public class CourseService {
                 .stream()
                 .map(course -> new CourseSummary(
                         course.getCourseId(),
-                        course.getCourseName()
+                        course.getCourseName(),
+                        courseDurationService.findDuration(course.getCourseId())
+                ))
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<CourseSummary> getCoursesByTopics(String topicname){
+        Topic topic = topicRepository.findByName(topicname
+        ).orElseThrow(() -> new NoSuchElementException("Topic not found"));
+        return topic.
+                getCourses()
+                .stream()
+                .map(course -> new CourseSummary(
+                        course.getCourseId(),
+                        course.getCourseName(),
+                        courseDurationService.findDuration(course.getCourseId())
                 ))
                 .toList();
     }
@@ -104,6 +138,21 @@ public class CourseService {
         course.getInstructorSet().add(instructor);
     }
 
+    @Transactional
+    public void updateCourseTopics(String courseId, Set<String> topicIds) {
+
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new NoSuchElementException("Course not found"));
+
+        Set<Topic> topics = new HashSet<>(topicRepository.findAllById(topicIds));
+
+        if (topics.size() != topicIds.size()) {
+            throw new IllegalArgumentException("One or more topics not found");
+        }
+
+        course.setTopics(topics);
+    }
+
     /* ---------------- DELETE ---------------- */
 
     public void deleteCourse(String courseId) {
@@ -113,6 +162,7 @@ public class CourseService {
 
         courseRepository.delete(course);
     }
+
 
     /* ---------------- MAPPER ---------------- */
 
@@ -135,21 +185,8 @@ public class CourseService {
                 phaseSummaries,
                 course.getFinalAssessment() != null
                         ? course.getFinalAssessment().getAssessmentId()
-                        : null
+                        : null,
+                courseDurationService.findDuration(course.getCourseId())
         );
-    }
-    // helper methods;
-
-    public Integer getCourseDuration(String courseId) {
-        Integer duration = 0;
-        Course course = courseRepository.findById(courseId).orElseThrow(
-                () -> new NoSuchElementException("Course not found")
-        );
-        for(Phase phase:course.getPhases()){
-            for(Content content : phase.getContentsList()) {
-                duration+=content.getDurationInMinutes();
-            }
-        }
-        return duration;
     }
 }

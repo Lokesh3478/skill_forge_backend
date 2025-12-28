@@ -21,13 +21,21 @@ public class CourseDurationService {
         Course course = courseRepository.findById(courseId).orElseThrow(
                 ()-> new NoSuchElementException("course not found: " + courseId)
         );
-        for(Phase phase : course.getPhases()){
-            for(Content content:phase.getContentsList()){
-                duration+=content.getDurationInMinutes();
+        if(course.getPhases()!=null) {
+            for (Phase phase : course.getPhases()) {
+                if(phase.getContentsList()!=null) {
+                for (Content content : phase.getContentsList()) {
+                    duration += content.getDurationInMinutes();
+                }
+                if (phase.getTest() != null) {
+                    duration += phase.getTest().getDurationInMinutes();
+                }
+                }
             }
-            duration+=phase.getTest().getDurationInMinutes();
+            if (course.getFinalAssessment() != null) {
+                duration += course.getFinalAssessment().getDurationInMinutes();
+            }
         }
-        duration+=course.getFinalAssessment().getDurationInMinutes();
         return duration;
     }
 }

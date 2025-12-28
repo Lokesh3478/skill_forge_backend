@@ -20,28 +20,6 @@ public class AdminController {
         return "Admin Dashboard Accessed";
     }
 
-    /* ---------------- CREATE COURSE ---------------- */
-
-    @PostMapping("/create-course")
-    @ResponseStatus(HttpStatus.CREATED)
-    public CourseResponse createCourse(
-            @Valid @RequestBody CourseCreateRequest request
-    ) {
-        System.out.println("hit");
-        System.out.println(request);
-        return courseService.createCourse(request);
-    }
-
-    /*------------ADD INSTRUCTOR---------------*/
-
-    @PostMapping("/add-instructor")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void addInstructor(
-            @Valid @RequestBody AssignInstructor assignInstructor
-            ){
-        courseService.assignInstructorToCourse(assignInstructor.courseId(),assignInstructor.instructorEmail());
-    }
-
     @PostMapping("/create-instructor")
     public String createInstructor() {
         return "Instructor Account Created (Example Endpoint)";

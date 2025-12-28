@@ -27,6 +27,7 @@ public class CourseController {
             @PathVariable String courseId
     ) {
 
+        System.out.println("hit from /{courseId}");
         return courseService.getCourseById(courseId);
     }
 
@@ -37,6 +38,14 @@ public class CourseController {
     @GetMapping
     public List<CourseSummary> getAllCourses() {
         return courseService.getAllCourses();
+    }
+
+    @GetMapping("/topic/{topicName}")
+    public List<CourseSummary>getAllCoursesByTopic(
+            @PathVariable String topicName
+    ){
+        System.out.println("hit");
+        return courseService.getCoursesByTopics(topicName);
     }
 
     /* ---------------- UPDATE ---------------- */
