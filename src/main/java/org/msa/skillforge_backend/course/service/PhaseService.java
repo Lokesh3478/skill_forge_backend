@@ -111,7 +111,8 @@ public class PhaseService {
                 content.getContentId(),
                 content.getContentName(),
                 content.getContentUrl(),
-                content.getPhase().getPhaseId()
+                content.getPhase().getPhaseId(),
+                content.getDurationInSeconds()
         );
     }
 }

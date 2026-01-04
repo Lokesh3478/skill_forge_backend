@@ -14,7 +14,6 @@ import org.msa.skillforge_backend.taxonomy.service.DomainService;
 import org.msa.skillforge_backend.taxonomy.service.FieldOfStudyService;
 import org.msa.skillforge_backend.taxonomy.service.TopicService;
 import org.springframework.http.HttpStatus;
-import org.springframework.messaging.tcp.TcpOperations;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;

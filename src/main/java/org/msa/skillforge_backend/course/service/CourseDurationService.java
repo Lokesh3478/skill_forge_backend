@@ -5,7 +5,6 @@ import org.msa.skillforge_backend.course.entity.Content;
 import org.msa.skillforge_backend.course.entity.Course;
 import org.msa.skillforge_backend.course.entity.Phase;
 import org.msa.skillforge_backend.course.repository.CourseRepository;
-import org.msa.skillforge_backend.course.repository.PhaseRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +24,7 @@ public class CourseDurationService {
             for (Phase phase : course.getPhases()) {
                 if(phase.getContentsList()!=null) {
                 for (Content content : phase.getContentsList()) {
-                    duration += content.getDurationInMinutes();
+                    duration += content.getDurationInSeconds();
                 }
                 if (phase.getTest() != null) {
                     duration += phase.getTest().getDurationInMinutes();

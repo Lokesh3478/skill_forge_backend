@@ -3,5 +3,5 @@ public record ContentResponse(
         String contentId,
         String contentName,
         String contentUrl,
-        String phaseId
-) {}
+        String phaseId,
+        Integer durationInSeconds) {}

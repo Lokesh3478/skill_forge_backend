@@ -28,7 +28,7 @@ public class ContentService {
         String phaseId = createContentRequest.phaseId();
         String contentName = createContentRequest.contentName();
         String contentUrl = createContentRequest.contentUrl();
-        Integer durationInMinutes = createContentRequest.durationInMinutes();
+        Integer durationInMinutes = createContentRequest.durationInSeconds();
         Phase phase = phaseRepository.findById(phaseId)
                 .orElseThrow(() -> new NoSuchElementException("Phase not found"));
 
@@ -42,7 +42,7 @@ public class ContentService {
                 .contentName(contentName)
                 .contentUrl(contentUrl)
                 .phase(phase)
-                .durationInMinutes(durationInMinutes)
+                .durationInSeconds(durationInMinutes)
                 .build();
 
         return mapToResponse(contentRepository.save(content));
@@ -102,7 +102,8 @@ public class ContentService {
                 content.getContentId(),
                 content.getContentName(),
                 content.getContentUrl(),
-                content.getPhase().getPhaseId()
+                content.getPhase().getPhaseId(),
+                content.getDurationInSeconds()
         );
     }
 }

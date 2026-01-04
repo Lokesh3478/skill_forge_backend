@@ -38,7 +38,7 @@ public class AdminTopicController {
         return topicService.getById(topicId);
     }
 
-    @GetMapping("/{domainId}")
+    @GetMapping("domain/{domainId}")
     @ResponseStatus(HttpStatus.OK)
     public List<TopicResponse> getAllTopicsByDomainId(
             @PathVariable String domainId

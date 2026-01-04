@@ -126,7 +126,8 @@ public class AssessmentService {
                     test.getAssessmentId(),
                     AssessmentType.TEST,
                     test.getPhase() != null ? test.getPhase().getPhaseId() : null,
-                    null
+                    null,
+                    test.getDurationInMinutes()
             );
         }
 
@@ -137,7 +138,8 @@ public class AssessmentService {
                     null,
                     finalAssessment.getCourse() != null
                             ? finalAssessment.getCourse().getCourseId()
-                            : null
+                            : null,
+                    finalAssessment.getDurationInMinutes()
             );
         }
 
@@ -182,6 +184,7 @@ public class AssessmentService {
                                 q.getOptions()
                         ))
                         .toList(),
+                assessment.getDurationInMinutes(),
                 questionPage.getNumber(),
                 questionPage.getSize(),
                 questionPage.getTotalElements(),

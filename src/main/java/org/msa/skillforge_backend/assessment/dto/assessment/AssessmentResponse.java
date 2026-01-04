@@ -4,7 +4,7 @@ public record AssessmentResponse(
         String assessmentId,
         AssessmentType type,
         String phaseId,
-        String courseId
-) {}
+        String courseId,
+        Integer durationInMinutes) {}
 
 

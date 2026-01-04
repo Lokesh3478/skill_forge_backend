@@ -55,17 +55,20 @@ public class QuestionService {
     /*---------UPDATE SERVICE----------*/
 
     public MCQResponse updateMCQ(
-            String questionId,
             MCQUpdateRequest request
     ) {
-
+        String questionId = request.questionId();
         MCQQuestion question = mcqQuestionRepository.findById(questionId)
                 .orElseThrow(() -> new NoSuchElementException("MCQ question not found"));
-
-        question.setQuestionText(request.questionText());
-        question.setOptions(request.options());
-        question.setCorrectAnswer(request.correctAnswer());
-
+        if(request.questionText()!=null) {
+            question.setQuestionText(request.questionText());
+        }
+        if(request.options()!=null) {
+            question.setOptions(request.options());
+        }
+        if(request.correctAnswer()!=null) {
+            question.setCorrectAnswer(request.correctAnswer());
+        }
         return mapToMCQResponse(mcqQuestionRepository.save(question));
     }
 

@@ -11,6 +11,7 @@ public record AssessmentWithQuestionsResponse(
         String phaseId,
         String courseId,
         List<MCQResponse> questions,
+        Integer durationInMinutes,
         int page,
         int size,
         long totalElements,

@@ -21,5 +21,5 @@ public record CreateContentRequest (
                 @Min(1)
                 @Max(300)
                 @Column(nullable = false)
-        Integer durationInMinutes
+        Integer durationInSeconds
 ){}

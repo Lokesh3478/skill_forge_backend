@@ -11,21 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/questions")
+@RequestMapping("/api/v1/questions")
 @RequiredArgsConstructor
 public class QuestionController {
 
     private final QuestionService questionService;
-
-    /* ---------------- CREATE MCQ ---------------- */
-
-    @PostMapping("/mcq")
-    @ResponseStatus(HttpStatus.CREATED)
-    public MCQResponse createMCQ(
-            @Valid @RequestBody MCQCreateRequest request
-    ) {
-        return questionService.createMCQ(request);
-    }
 
     /* ---------------- READ ---------------- */
 
@@ -34,15 +24,5 @@ public class QuestionController {
             @PathVariable String assessmentId
     ) {
         return questionService.getQuestionsByAssessment(assessmentId);
-    }
-
-    /* ---------------- DELETE ---------------- */
-
-    @DeleteMapping("/{questionId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteQuestion(
-            @PathVariable String questionId
-    ) {
-        questionService.deleteQuestion(questionId);
     }
 }

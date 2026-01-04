@@ -9,5 +9,5 @@ public record CourseResponse(
         String courseName,
         List<PhaseSummary> phases,
         String finalAssessmentId,
-        Integer durationInMinutes
+        Integer durationInSeconds
 ) {}

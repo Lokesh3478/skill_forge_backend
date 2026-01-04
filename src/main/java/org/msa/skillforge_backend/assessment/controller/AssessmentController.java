@@ -28,15 +28,6 @@ public class AssessmentController {
         );
     }
 
-    /* ---------------- DELETE ---------------- */
-
-    @DeleteMapping("/{assessmentId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAssessment(
-            @PathVariable String assessmentId
-    ) {
-        assessmentService.deleteAssessment(assessmentId);
-    }
 
     @GetMapping("/{assessmentId}/questions")
     public ResponseEntity<AssessmentWithQuestionsResponse> getAssessmentWithQuestions(

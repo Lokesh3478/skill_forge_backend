@@ -70,38 +70,4 @@ public class InstructorController {
         return contentService.createContent(request);
     }
 
-    /* ---------------- CREATE FINAL ASSESSMENT (Course-level) ---------------- */
-
-    @PostMapping("/create-final-assessment")
-    public ResponseEntity<AssessmentResponse> createFinalAssessmentForCourse(
-            @RequestBody FinalAssessmentCreateRequest request
-            ) {
-        return new ResponseEntity<>(
-                assessmentService.createFinalAssessmentForCourse(request),
-                HttpStatus.CREATED
-        );
-    }
-
-    /*------------------CREATE TEST*---------------------*/
-
-    @PostMapping("/create-test")
-    public ResponseEntity<AssessmentResponse> createTestAssessmentForCourse(
-            @RequestBody TestCreateRequest testCreateRequest
-            ){
-        return new ResponseEntity<>(
-                assessmentService.createTestForPhase(testCreateRequest),
-                HttpStatus.CREATED
-        );
-    }
-
-    /* ---------------- CREATE MCQ ---------------- */
-
-    @PostMapping("/create-mcq")
-    @ResponseStatus(HttpStatus.CREATED)
-    public MCQResponse createMCQ(
-            @Valid @RequestBody MCQCreateRequest request
-    ) {
-        return questionService.createMCQ(request);
-    }
-
 }
